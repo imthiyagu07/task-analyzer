@@ -2,9 +2,12 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { connectDB } from "./config/db.js";
 
 const app = express();
 dotenv.config();
+
+connectDB();
 
 app.use(express.json());
 app.use(cors({origin: process.env.FRONTEND_URL, credentials: true}));
