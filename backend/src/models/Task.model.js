@@ -7,6 +7,7 @@ const taskSchema = new mongoose.Schema({
     due_date: {type: Date, required: true},
     estimated_hours: {type: Number, required: true, min: 0},
     importance: {type: Number, required: true, min: 1, max: 5},
+    priorityScore: {type: Number, default: 0},
     status: {type: String, enum: ["pending", "completed"], default: "pending"},
 }, {timestamps: true});
 
