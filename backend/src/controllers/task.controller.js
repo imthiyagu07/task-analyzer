@@ -7,8 +7,7 @@ export const createTask = async (req, res) => {
         if (!title || !due_date || estimated_hours === undefined || importance === undefined) {
             return res.status(400).json({ message: "All fields are required" });
         }
-        const priority_score = priorityAlgo(due_date, estimated_hours, importance)
-        const task = await Task.create({ userId: req.user._id, title, description, due_date, estimated_hours, importance, priorityScore: priority_score });
+        const task = await Task.create({ userId: req.user._id, title, description, due_date, estimated_hours, importance });
         res.status(201).json(task);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -17,8 +16,20 @@ export const createTask = async (req, res) => {
 
 export const getAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find({ userId: req.user._id }).sort({ priorityScore: -1 });
-        res.status(200).json(tasks);
+        const tasks = await Task.find({ userId: req.user._id });
+
+        // Recalculate priority based on "now"
+        const tasksWithRealtimeScore = tasks.map(task => {
+            // Convert to object to avoid modifying the Mongoose document directly without saving
+            const taskObj = task.toObject();
+            taskObj.priorityScore = priorityAlgo(task.due_date, task.estimated_hours, task.importance);
+            return taskObj;
+        });
+
+        // Sort by the new dynamic score
+        tasksWithRealtimeScore.sort((a, b) => b.priorityScore - a.priorityScore);
+
+        res.status(200).json(tasksWithRealtimeScore);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -45,23 +56,6 @@ export const updateTask = async (req, res) => {
             return res.status(404).json({ message: "Task not found" });
         }
         const { title, description, due_date, estimated_hours, importance, status } = req.body;
-
-        const shouldRecalculatePriority =
-            due_date !== undefined ||
-            estimated_hours !== undefined ||
-            importance !== undefined;
-
-        if (shouldRecalculatePriority) {
-            const newDueDate = due_date ?? task.due_date;
-            const newEstimatedHours = estimated_hours ?? task.estimated_hours;
-            const newImportance = importance ?? task.importance;
-
-            task.priorityScore = priorityAlgo(
-                newDueDate,
-                newEstimatedHours,
-                newImportance
-            );
-        }
 
         if (title !== undefined) task.title = title;
         if (description !== undefined) task.description = description;
