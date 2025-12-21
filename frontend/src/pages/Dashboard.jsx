@@ -15,7 +15,7 @@ const Dashboard = () => {
         isDeleteModalOpen,
         taskToDelete,
         deleteTask,
-        clearTaskToDelete
+        clearTaskToDelete,
     } = useTaskStore();
 
     useEffect(() => {
