@@ -81,12 +81,6 @@ const Dashboard = () => {
 
             <TaskForm />
 
-            {loading && (
-                <div className="py-10 text-center">
-                    <p className="text-neutral-500 animate-pulse font-medium">Analyzing tasks logic...</p>
-                </div>
-            )}
-
             <div className="space-y-4">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-7">
                     <div className="flex items-center gap-4">
@@ -116,6 +110,12 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </div>
+
+                {loading && (
+                    <div className="py-10 text-center">
+                        <p className="text-neutral-500 animate-pulse font-medium">Analyzing tasks logic...</p>
+                    </div>
+                )}
 
                 {filteredTasks.length === 0 && !loading && (
                     <div className="text-center py-12 text-neutral-600 bg-neutral-900/30 rounded-xl border border-neutral-800 border-dashed">

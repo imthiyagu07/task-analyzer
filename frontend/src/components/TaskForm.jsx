@@ -12,6 +12,8 @@ const TaskForm = ({ isModal = false, onClose }) => {
     });
 
     const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState("");
 
     useEffect(() => {
         if (isModal && taskToEdit) {
@@ -36,17 +38,29 @@ const TaskForm = ({ isModal = false, onClose }) => {
         }
 
         setError("");
+        setIsSubmitting(true);
+        setSuccess("");
 
-        if (isModal && taskToEdit) {
-            await updateTask(taskToEdit._id, form);
-            clearTaskToEdit();
-            if (onClose) onClose();
-        } else {
-            await addTask(form);
-            setForm({ title: "", description: "", due_date: "", estimated_hours: "", importance: 3 });
+        try {
+            if (isModal && taskToEdit) {
+                await updateTask(taskToEdit._id, form);
+                setSuccess("Task updated successfully!");
+                setTimeout(() => {
+                    clearTaskToEdit();
+                    if (onClose) onClose();
+                }, 1000);
+            } else {
+                await addTask(form);
+                setSuccess("Task created successfully!");
+                setForm({ title: "", description: "", due_date: "", estimated_hours: "", importance: 3 });
+            }
+            await fetchTasks();
+        } catch (err) {
+            setError("Something went wrong. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+            setTimeout(() => setSuccess(""), 3000);
         }
-
-        await fetchTasks();
     };
 
 
@@ -64,6 +78,12 @@ const TaskForm = ({ isModal = false, onClose }) => {
                 </div>
             )}
 
+            {success && (
+                <div className="bg-green-500/10 border border-green-500/20 text-green-500 p-3 rounded-lg text-md font-medium text-center">
+                    {success}
+                </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-1 md:col-span-2">
                     <label className="block text-xs uppercase tracking-wider text-neutral-500 mb-1 font-bold">Title *</label>
@@ -72,6 +92,7 @@ const TaskForm = ({ isModal = false, onClose }) => {
                         placeholder="What needs to be done?"
                         onChange={(e) => setForm({ ...form, title: e.target.value })}
                         value={form.title}
+                        disabled={isSubmitting}
                     />
                 </div>
 
@@ -82,6 +103,7 @@ const TaskForm = ({ isModal = false, onClose }) => {
                         placeholder="Add details about your task..."
                         onChange={(e) => setForm({ ...form, description: e.target.value })}
                         value={form.description}
+                        disabled={isSubmitting}
                     />
                 </div>
 
@@ -92,6 +114,7 @@ const TaskForm = ({ isModal = false, onClose }) => {
                         className="w-full bg-neutral-900 border border-neutral-800 p-3 rounded-lg focus:border-white outline-none text-white transition-all [&::-webkit-calendar-picker-indicator]:invert"
                         onChange={(e) => setForm({ ...form, due_date: e.target.value })}
                         value={form.due_date}
+                        disabled={isSubmitting}
                     />
                 </div>
 
@@ -105,6 +128,7 @@ const TaskForm = ({ isModal = false, onClose }) => {
                             setForm({ ...form, estimated_hours: e.target.value })
                         }
                         value={form.estimated_hours}
+                        disabled={isSubmitting}
                     />
                 </div>
 
@@ -116,10 +140,11 @@ const TaskForm = ({ isModal = false, onClose }) => {
                                 key={i}
                                 type="button"
                                 onClick={() => setForm({ ...form, importance: i })}
+                                disabled={isSubmitting}
                                 className={`flex-1 p-2 rounded-lg cursor-pointer border transition-all font-medium ${form.importance === i
                                     ? "bg-white border-white text-black shadow-md"
                                     : "bg-neutral-900 border-neutral-800 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-300"
-                                    }`}
+                                    } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
                             >
                                 {i}
                             </button>
@@ -128,8 +153,11 @@ const TaskForm = ({ isModal = false, onClose }) => {
                 </div>
             </div>
 
-            <button className="w-full cursor-pointer bg-white hover:bg-neutral-200 text-black font-bold py-3.5 rounded-lg transition-all active:scale-[0.99] mt-2 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                {isModal ? "Save Changes" : "Analyze & Add Task"}
+            <button
+                disabled={isSubmitting}
+                className={`w-full cursor-pointer bg-white hover:bg-neutral-200 text-black font-bold py-3.5 rounded-lg transition-all active:scale-[0.99] mt-2 shadow-[0_0_15px_rgba(255,255,255,0.1)] ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+                {isSubmitting ? "Analyzing..." : (isModal ? "Save Changes" : "Analyze & Add Task")}
             </button>
         </form>
     );
