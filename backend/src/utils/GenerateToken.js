@@ -7,10 +7,10 @@ export const generateToken = (userId, res) => {
 
     res.cookie("jwt", token, {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        secure: true,
+        sameSite: "none",
         path: "/",
-        partitioned: isProduction,
+        partitioned: true,
         maxAge: 30 * 24 * 60 * 60 * 1000
     });
 };
