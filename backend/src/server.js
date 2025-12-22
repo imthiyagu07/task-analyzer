@@ -7,6 +7,7 @@ import authRoutes from "../src/routes/auth.route.js";
 import taskRoutes from "../src/routes/task.route.js";
 
 const app = express();
+app.set("trust proxy", 1);
 dotenv.config();
 
 connectDB();
