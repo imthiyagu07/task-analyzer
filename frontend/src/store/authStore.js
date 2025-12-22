@@ -12,7 +12,6 @@ const useAuthStore = create((set) => ({
             const res = await api.get("/auth/me");
             set({ user: res.data });
         } catch (error) {
-            console.error(error);
             set({ user: null });
         } finally {
             set({ isCheckingAuth: false });
@@ -22,7 +21,7 @@ const useAuthStore = create((set) => ({
         set({ isLogin: true, error: null });
         try {
             const res = await api.post("/auth/login", data);
-            set({ user: res.data });
+            set({ user: res.data.newUser });
         } catch (error) {
             set({ error: error.response?.data?.message || "Login failed" });
         } finally {
@@ -33,7 +32,7 @@ const useAuthStore = create((set) => ({
         set({ isRegister: true, error: null })
         try {
             const res = await api.post("/auth/register", data);
-            set({ user: res.data })
+            set({ user: res.data.newUser })
         } catch (error) {
             set({ error: error.response?.data?.message || "Registration failed" });
         } finally {

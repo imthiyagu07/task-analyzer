@@ -9,8 +9,6 @@ export const generateToken = (userId, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
-        path: "/",
-        partitioned: true,
         maxAge: 30 * 24 * 60 * 60 * 1000
     });
 };
