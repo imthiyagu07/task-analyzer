@@ -8,6 +8,7 @@ export const generateToken = (userId, res) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         path: "/",
+        partitioned: true, // Required for Incognito/Cross-site access
         maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
