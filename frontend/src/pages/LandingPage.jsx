@@ -13,7 +13,7 @@ const LandingPage = () => {
             </div>
 
             {/* Navbar */}
-            <nav className="relative z-50 max-w-7xl mx-auto px-6 py-6 flex justify-between items-center bg-transparent backdrop-blur-sm sticky top-0">
+            <nav className="relative z-50 max-w-7xl mx-auto px-6 py-6 flex justify-between items-center bg-transparent backdrop-blur-sm top-0">
                 <div className="flex items-center gap-2.5">
                     <div className="w-9 h-9 bg-neutral-100 text-black font-black flex items-center justify-center rounded-xl text-xl shadow-lg shadow-white/5 border border-neutral-400">S</div>
                     <span className="font-bold text-lg tracking-tight hidden md:block text-neutral-100">Smart Task Analyzer</span>
@@ -44,7 +44,7 @@ const LandingPage = () => {
 
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] mb-8 bg-linear-to-b from-white via-neutral-200 to-neutral-600 bg-clip-text text-transparent drop-shadow-sm">
                     Stop Guessing.<br />
-                    <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Start Executing.</span>
+                    <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Start Executing.</span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
@@ -81,7 +81,7 @@ const LandingPage = () => {
             {/* Dynamic UI Preview Section */}
             <section className="relative z-10 max-w-7xl mx-auto px-6 mb-32">
                 <div className="relative border border-neutral-800 bg-neutral-950/80 backdrop-blur-xl rounded-2xl p-4 md:p-8 shadow-2xl">
-                    <div className="absolute -inset-1 bg-gradient-to-b from-white/5 to-transparent rounded-2xl blur-sm -z-10"></div>
+                    <div className="absolute -inset-1 bg-linear-to-b from-white/5 to-transparent rounded-2xl blur-sm -z-10"></div>
 
                     {/* Inner Dashboard Replica - Matching Dashboard.jsx */}
                     <div className="max-w-4xl mx-auto space-y-8 font-sans">
@@ -279,7 +279,7 @@ const LandingPage = () => {
 
                     {/* Visual Algorithm Mockup */}
                     <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-neutral-800 to-neutral-700 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                        <div className="absolute -inset-1 bg-linear-to-r from-neutral-800 to-neutral-700 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                         <div className="bg-neutral-950 border border-neutral-800 p-8 md:p-12 rounded-2xl relative shadow-2xl flex flex-col gap-6">
 
                             {/* Step 1: Input */}
