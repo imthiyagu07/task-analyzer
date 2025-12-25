@@ -21,6 +21,7 @@ const useAuthStore = create((set) => ({
         set({ isLogin: true, error: null });
         try {
             const res = await api.post("/auth/login", data);
+            if (res.data.token) localStorage.setItem("token", res.data.token);
             set({ user: res.data.newUser });
         } catch (error) {
             set({ error: error.response?.data?.message || "Login failed" });
@@ -32,6 +33,7 @@ const useAuthStore = create((set) => ({
         set({ isRegister: true, error: null })
         try {
             const res = await api.post("/auth/register", data);
+            if (res.data.token) localStorage.setItem("token", res.data.token);
             set({ user: res.data.newUser })
         } catch (error) {
             set({ error: error.response?.data?.message || "Registration failed" });
@@ -42,6 +44,7 @@ const useAuthStore = create((set) => ({
     logout: async () => {
         try {
             await api.post("/auth/logout");
+            localStorage.removeItem("token");
             set({ user: null });
         } catch (error) {
             set({ error: error.response?.data?.message || "Logout failed" })
