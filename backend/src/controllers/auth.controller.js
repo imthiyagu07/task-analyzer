@@ -65,6 +65,7 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
+    // 1. Clear the primary partitioned cookie (current standard)
     res.cookie("jwt", "", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -73,6 +74,16 @@ export const logout = (req, res) => {
         partitioned: true,
         expires: new Date(0)
     });
+
+    // 2. Clear potential legacy non-partitioned cookie
+    res.cookie("jwt", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        path: "/",
+        expires: new Date(0)
+    });
+
     res.status(200).json({ message: "Logout successful" });
 };
 
