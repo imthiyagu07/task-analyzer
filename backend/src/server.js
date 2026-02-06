@@ -12,10 +12,7 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
-app.use(cors({
-    origin: "*",
-    credentials: true
-}));
+app.use(cors());
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
