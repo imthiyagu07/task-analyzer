@@ -257,7 +257,7 @@ const LandingPage = () => {
                     </div>
                 </div>
             </section>
-
+            <div class="poper-57"></div>
             {/* Features Grid */}
             <section className="py-32 px-6 max-w-7xl mx-auto" id="how-it-works">
                 <div className="grid lg:grid-cols-2 gap-20 items-center">
